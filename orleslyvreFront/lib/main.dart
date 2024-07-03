@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> fetchTop5Items() async {
-    final response = await http.get(Uri.parse('https://api.example.com/top5'));
+    final response = await http.get(Uri.parse('http://localhost:3000/api/items/search?limit=5&orderBy=avg_rating_item'));
     if (response.statusCode == 200) {
       setState(() {
         top5Items = json.decode(response.body);
