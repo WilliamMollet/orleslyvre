@@ -90,6 +90,7 @@ CREATE TABLE `rating` (
   `val_rating` int(11) NOT NULL,
   `name_rating` varchar(50) DEFAULT NULL,
   `id_item` int(11) NOT NULL,
+  `comment_rating` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`id_rating`),
   KEY `id_item` (`id_item`),
   CONSTRAINT `CHK_val_rating_1` CHECK (0 <= `val_rating`),
@@ -104,20 +105,20 @@ CREATE TABLE `rating` (
 LOCK TABLES `rating` WRITE;
 /*!40000 ALTER TABLE `rating` DISABLE KEYS */;
 INSERT INTO `rating` VALUES
-(6,5,'test',2),
-(7,2,'test',2),
-(8,2,'test',2),
-(9,2,'test',2),
-(10,2,'test',2),
-(11,2,'test',2),
-(12,2,'test',2),
-(13,2,'test',2),
-(14,2,'test',2),
-(15,2,'test',2),
-(16,5,'test',2),
-(17,5,'test',3),
-(18,0,'test',3),
-(19,5,'test',5);
+(6,5,'test',2,NULL),
+(7,2,'test',2,NULL),
+(8,2,'test',2,NULL),
+(9,2,'test',2,NULL),
+(10,2,'test',2,NULL),
+(11,2,'test',2,NULL),
+(12,2,'test',2,NULL),
+(13,2,'test',2,NULL),
+(14,2,'test',2,NULL),
+(15,2,'test',2,NULL),
+(16,5,'test',2,NULL),
+(17,5,'test',3,NULL),
+(18,0,'test',3,NULL),
+(19,5,'test',5,NULL);
 /*!40000 ALTER TABLE `rating` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -130,4 +131,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-03 14:18:21
+-- Dump completed on 2024-07-03 15:13:14

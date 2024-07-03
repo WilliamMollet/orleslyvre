@@ -51,7 +51,7 @@ app.get('/api/items', async (req, res) => {
 app.post('/api/items', async (req, res) => {
     const newItem = req.body;
     try {
-        const result = await db.query('INSERT INTO Item (name_item, avg_rating_item, desc_item, id_cat) VALUES (?,?,?,?)', [newItem.name_item, newItem.avg_rating_item, newItem.desc_item, newItem.id_cat]);
+        const result = await db.query('INSERT INTO Item (name_item, desc_item, id_cat) VALUES (?,?,?)', [newItem.name_item, newItem.desc_item, newItem.id_cat]);
         res.status(201).json({ id: result[0], ...newItem });
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -59,9 +59,10 @@ app.post('/api/items', async (req, res) => {
 });
 
 // Routes pour Rating
-app.get('/api/ratings', async (req, res) => {
+app.get('/api/:item/ratings', async (req, res) => {
+    item = req.params.item;
     try {
-        const rows = await db.query('SELECT * FROM Rating');
+        const rows = await db.query('SELECT * FROM Rating WHERE id_item = ?', item);
         res.json(rows);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -94,19 +95,48 @@ async function updateAvgRating(itemId) {
     }
 }
 
-// Nouvelle route pour récupérer des items classés par note moyenne
-app.get('/api/items/ranked', async (req, res) => {
-    const { category, limit } = req.query;
+// Route pour rechercher des items
+app.get('/api/items/search', async (req, res) => {
+    const { category, limit, search, rating, orderBy, direction } = req.query;
 
     let query = 'SELECT * FROM Item';
     let queryParams = [];
 
+    let conditions = [];
+
     if (category) {
-        query += ' WHERE id_cat = ?';
+        conditions.push('id_cat = ?');
         queryParams.push(category);
     }
 
-    query += ' ORDER BY avg_rating_item DESC';
+    if (search) {
+        conditions.push('name_item LIKE ?');
+        queryParams.push(`%${search}%`);
+    }
+
+    if (rating) {
+        conditions.push('avg_rating_item >= ?');
+        queryParams.push(parseFloat(rating));
+    }
+
+    if (conditions.length > 0) {
+        query += ' WHERE ' + conditions.join(' AND ');
+    }
+
+    let orderClause = ' ORDER BY ';
+    if (orderBy) {
+        orderClause += `${orderBy} `;
+    } else {
+        orderClause += 'name_item ';
+    }
+
+    if (direction && (direction.toUpperCase() === 'ASC' || direction.toUpperCase() === 'DESC')) {
+        orderClause += direction.toUpperCase();
+    } else {
+        orderClause += 'DESC';
+    }
+
+    query += orderClause;
 
     if (limit) {
         query += ' LIMIT ?';
@@ -120,6 +150,7 @@ app.get('/api/items/ranked', async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
