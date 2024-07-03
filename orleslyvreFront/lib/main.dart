@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:google_fonts/google_fonts.dart';
-import 'item.dart'; 
-import 'search.dart'; 
+import 'item.dart'; // Importation de la page "Item"
+import 'search.dart'; // Importation de la page "SearchPage"
 
 void main() {
   runApp(MyApp());
@@ -59,8 +59,8 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             icon: Icon(Icons.person_outline),
             onPressed: () {
-              // 
-              // 
+              // Action à effectuer pour "Connexion"
+              // Exemple: showDialog(...) pour afficher un dialogue de connexion
             },
           ),
         ],
@@ -132,7 +132,7 @@ class _HomePageState extends State<HomePage> {
   Widget _buildCategoryCard(String category, String imagePath, String categoryId) {
     return GestureDetector(
       onTap: () {
-        
+        // Naviguer vers la page de recherche avec l'ID de la catégorie
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => SearchPage(categoryId: categoryId)),
