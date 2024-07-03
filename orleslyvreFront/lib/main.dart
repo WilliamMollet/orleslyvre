@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:google_fonts/google_fonts.dart';
+import 'item.dart'; // Importation de la page "Item"
+import 'search.dart'; // Importation de la page "SearchPage"
 
 void main() {
   runApp(MyApp());
@@ -53,25 +55,37 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Accueil'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.person_outline),
+            onPressed: () {
+              // Action à effectuer pour "Connexion"
+              // Exemple: showDialog(...) pour afficher un dialogue de connexion
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            TextField(
-              decoration: InputDecoration(
-              filled: true,
-              fillColor: Color(0xFF806491).withOpacity(0.7), // Couleur avec opacité réduite
-              hintText: 'Rechercher...',
-              prefixIcon: Icon(Icons.search, color: Colors.white),
-              contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-              border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.0),
-              borderSide: BorderSide.none,
-              ),
-            ),
-            style: TextStyle(color: Colors.black),
-            cursorColor: Colors.black,
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Color(0xFF806491),
+                      hintText: 'Rechercher...',
+                      prefixIcon: Icon(Icons.search, color: Colors.white),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
             SizedBox(height: 20),
             Text('Top 5', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF2F70AF))),
@@ -92,11 +106,22 @@ class _HomePageState extends State<HomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildCategoryCard('Books', 'assets/images/Books.png'),
-                _buildCategoryCard('Series', 'assets/images/Series.png'),
-                _buildCategoryCard('Movies', 'assets/images/Movies.png'),
-                _buildCategoryCard('Music', 'assets/images/Musics.png'),
+                _buildCategoryCard('Books', 'assets/images/Books.png', '1'),
+                _buildCategoryCard('Series', 'assets/images/Series.png', '2'),
+                _buildCategoryCard('Movies', 'assets/images/Movies.png', '3'),
+                _buildCategoryCard('Music', 'assets/images/Musics.png', '4'),
               ],
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                // Naviguer vers la page de saisie d'élément
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ItemPage()),
+                );
+              },
+              child: Text('Ajouter un élément'),
             ),
           ],
         ),
@@ -104,17 +129,26 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildCategoryCard(String category, String imagePath) {
-    return Card(
-      color: Color(0xFF2F70AF),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Image.asset(imagePath, height: 32, width: 32),
-            SizedBox(height: 10),
-            Text(category, style: TextStyle(color: Colors.white)),
-          ],
+  Widget _buildCategoryCard(String category, String imagePath, String categoryId) {
+    return GestureDetector(
+      onTap: () {
+        // Naviguer vers la page de recherche avec l'ID de la catégorie
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SearchPage(categoryId: categoryId)),
+        );
+      },
+      child: Card(
+        color: Color(0xFF2F70AF),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Image.asset(imagePath, height: 32, width: 32),
+              SizedBox(height: 10),
+              Text(category, style: TextStyle(color: Colors.white)),
+            ],
+          ),
         ),
       ),
     );
