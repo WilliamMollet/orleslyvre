@@ -5,6 +5,7 @@ import 'dart:core';
 import 'package:google_fonts/google_fonts.dart';
 import 'item.dart'; 
 import 'search.dart';
+import 'detail.dart';
 
 
 void main() {
@@ -42,7 +43,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> fetchTop5Items() async {
-    final response = await http.get(Uri.parse('http://localhost:3000/api/items/search?limit=5&orderBy=avg_rating_item'));
+    final response = await http.get(Uri.parse('http://10.0.2.2:3000/api/items/search?limit=5&orderBy=avg_rating_item'));
     if (response.statusCode == 200) {
       setState(() {
         top5Items = json.decode(response.body);
@@ -99,7 +100,10 @@ class _HomePageState extends State<HomePage> {
                         return ListTile(
                           title: Text(top5Items[index]['name_item']),
                           subtitle: Text('Categorie: ' + top5Items[index]['cat_item'] + '  |  NOTE: ' + top5Items[index]['avg_rating_item']),
-                        
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => DetailPage(itemId: top5Items[index]['id_item'].toString())),
+                          )
                         );
                       },
                     ),

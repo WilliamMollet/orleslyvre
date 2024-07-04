@@ -48,6 +48,30 @@ app.get('/api/items', async (req, res) => {
     }
 });
 
+app.get('/api/item/:id', async (req, res) => {
+    const id = req.params.id;
+    try {
+        const rows = await db.query('SELECT * FROM Item WHERE id_item = ?', id);
+        rows[0].ratings = await getItemRatings(id);
+        res.json(rows);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+async function getItemRatings(itemId) {
+    try {
+        const rows = await db.query('SELECT * FROM Rating WHERE id_item = ?', itemId);
+        if (rows.length > 0) {
+            return rows;
+        } else {
+            return [];
+        }
+    } catch (err) {
+        console.error(err);
+    }
+}
+
 app.post('/api/items', async (req, res) => {
     const newItem = req.body;
     try {
