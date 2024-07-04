@@ -32,7 +32,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Future<List<dynamic>> fetchCategories() async {
-    String apiUrl = 'http://10.0.2.2:3000/api/categories'; 
+    String apiUrl = 'http://localhost:3000/api/categories'; 
 
     final response = await http.get(Uri.parse(apiUrl));
     if (response.statusCode == 200) {
@@ -43,7 +43,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Future<void> fetchItems({String? categoryFilter, int? ratingFilter, String? searchQuery}) async {
-    String apiUrl = 'http://10.0.2.2:3000/api/items/search/items?category=${widget.categoryId}&rating=${selectedRating}&sarch=${searchQuery}';
+    String apiUrl = 'http://localhost:3000/api/items/search/items?category=${widget.categoryId}&rating=${selectedRating}&sarch=${searchQuery}';
     if (categoryFilter != null && categoryFilter.isNotEmpty) {
       apiUrl += '&filter_category=$categoryFilter';
     }

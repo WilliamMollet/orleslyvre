@@ -21,7 +21,7 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   Future<void> fetchItem() async {
-    final response = await http.get(Uri.parse('http://10.0.2.2:3000/api/item/${widget.itemId}'));
+    final response = await http.get(Uri.parse('http://localhost:3000/api/item/${widget.itemId}'));
     if (response.statusCode == 200) {
       print(jsonDecode(response.body));
       final List<dynamic> data = jsonDecode(response.body);
