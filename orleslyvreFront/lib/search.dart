@@ -147,8 +147,8 @@ class _SearchPageState extends State<SearchPage> {
                 },
                 items: categories.map<DropdownMenuItem<String>>((dynamic category) {
                   return DropdownMenuItem<String>(
-                    value: category['cat_label'],
-                    child: Text(category['cat_label']),
+                    value: category['label_cat'],
+                    child: Text(category['label_cat']),
                   );
                 }).toList(),
               ),
