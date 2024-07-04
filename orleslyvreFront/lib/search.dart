@@ -44,7 +44,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Future<void> fetchItems({String? categoryFilter, int? ratingFilter, String? searchQuery}) async {
-    String apiUrl = 'http://10.0.2.2:3000/api/items/search?category=${widget.categoryId}&rating=${selectedRating}&search=${searchQuery}';
+    String apiUrl = 'http://localhost:3000/api/items/search?category=${widget.categoryId}&rating=${selectedRating}&search=${searchQuery}';
     if (categoryFilter != null && categoryFilter.isNotEmpty) {
       apiUrl += '&filter_category=$categoryFilter';
     }
