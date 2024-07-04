@@ -86,7 +86,7 @@ async function updateAvgRating(itemId) {
     try {
         const ratings = await db.query('SELECT AVG(val_rating) as avg_rating FROM Rating WHERE id_item = ?', [itemId]);
         console.log(ratings[0].avg_rating);
-        const avgRating = ratings[0].avg_rating;
+        const avgRating = Math.round(ratings[0].avg_rating * 10) / 10;
         console.log(avgRating);
         const newAvgRating = await db.query('UPDATE Item SET avg_rating_item = ? WHERE id_item = ?', [avgRating, itemId]);
         console.log(newAvgRating);
