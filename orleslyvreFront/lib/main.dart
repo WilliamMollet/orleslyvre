@@ -62,8 +62,6 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             icon: Icon(Icons.person_outline),
             onPressed: () {
-              // Action à effectuer pour "Connexion"
-              // Exemple: showDialog(...) pour afficher un dialogue de connexion
             },
           ),
         ],
@@ -122,7 +120,6 @@ class _HomePageState extends State<HomePage> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Naviguer vers la page de saisie d'élément
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ItemPage()),
@@ -139,7 +136,6 @@ class _HomePageState extends State<HomePage> {
   Widget _buildCategoryCard(String category, String imagePath, String categoryId) {
     return GestureDetector(
       onTap: () {
-        // Naviguer vers la page de recherche avec l'ID de la catégorie
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => SearchPage(categoryId: categoryId)),
