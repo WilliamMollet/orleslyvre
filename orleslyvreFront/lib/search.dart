@@ -5,8 +5,9 @@ import 'detail.dart';
 
 class SearchPage extends StatefulWidget {
   final String categoryId;
+  final String searchQuery;
 
-  SearchPage({required this.categoryId});
+  SearchPage.search({required this.categoryId, required this.searchQuery});
 
   @override
   _SearchPageState createState() => _SearchPageState();
@@ -23,7 +24,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   void initState() {
     super.initState();
-    fetchItems();
+    fetchItems(searchQuery: widget.searchQuery, categoryFilter: widget.categoryId, ratingFilter: selectedRating);
     fetchCategories().then((data) {
       setState(() {
         categories = data;
@@ -43,22 +44,20 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Future<void> fetchItems({String? categoryFilter, int? ratingFilter, String? searchQuery}) async {
-    String apiUrl = 'http://10.0.2.2:3000/api/items/search/items?category=${widget.categoryId}&rating=${selectedRating}&sarch=${searchQuery}';
+    String apiUrl = 'http://10.0.2.2:3000/api/items/search?category=${widget.categoryId}&rating=${selectedRating}&search=${searchQuery}';
     if (categoryFilter != null && categoryFilter.isNotEmpty) {
       apiUrl += '&filter_category=$categoryFilter';
     }
     if (ratingFilter != null && ratingFilter > 0) {
       apiUrl += '&filter_rating=$ratingFilter';
     }
-    if (searchQuery != null && searchQuery.isNotEmpty) {
-      apiUrl += '&search=$searchQuery';
-    }
-
+    print(apiUrl);
     final response = await http.get(Uri.parse(apiUrl));
     if (response.statusCode == 200) {
       setState(() {
         items = json.decode(response.body);
       });
+      print(items);
     } else {
       throw Exception('Failed to load items');
     }
@@ -113,9 +112,9 @@ class _SearchPageState extends State<SearchPage> {
               itemCount: items.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  title: Text(items[index]['title']),
-                  subtitle: Text(items[index]['description']),
-                  trailing: Text(items[index]['avg_rating'].toString()),
+                  title: Text(items[index]['name_item']),
+                  subtitle: Text(items[index]['desc_item']),
+                  trailing: Text(items[index]['avg_rating_item'].toString()),
                   onTap: () => Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => DetailPage(itemId: items[index]['id_item'].toString())),

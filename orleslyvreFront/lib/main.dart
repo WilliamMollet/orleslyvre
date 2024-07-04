@@ -84,8 +84,12 @@ class _HomePageState extends State<HomePage> {
                         borderSide: BorderSide.none,
                       ),
                     ),
+                    onSubmitted: (value) => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SearchPage.search(searchQuery: value.isEmpty ? '' : value, categoryId: '')),
+                    ),
                   ),
-                ),
+                )
               ],
             ),
             SizedBox(height: 20),
@@ -138,7 +142,7 @@ class _HomePageState extends State<HomePage> {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => SearchPage(categoryId: categoryId)),
+          MaterialPageRoute(builder: (context) => SearchPage.search(categoryId: categoryId, searchQuery: '')),
         );
       },
       child: Card(
