@@ -33,7 +33,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Future<List<dynamic>> fetchCategories() async {
-    String apiUrl = 'http://10.0.2.2:3000/api/categories'; 
+    String apiUrl = 'http://localhost:3000/api/categories'; 
 
     final response = await http.get(Uri.parse(apiUrl));
     if (response.statusCode == 200) {
