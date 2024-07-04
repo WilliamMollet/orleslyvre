@@ -145,12 +145,24 @@ app.get('/api/items/search', async (req, res) => {
 
     try {
         const rows = await db.query(query, queryParams);
+        for (let i = 0; i < rows.length; i++) {
+            const category = await itemCategory(rows[i].id_cat);
+            rows[i].cat_item = category[0].label_cat;
+        }
         res.json(rows);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
 
+async function itemCategory(id) {
+    try {
+        const rows = await db.query('SELECT label_cat FROM Category WHERE id_cat = ?', id);
+        return rows;
+    } catch (err) {
+        console.error(err);
+    }
+}
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
