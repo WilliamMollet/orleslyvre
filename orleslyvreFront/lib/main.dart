@@ -116,8 +116,8 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _buildCategoryCard('Books', 'assets/images/Books.png', '1'),
-                _buildCategoryCard('Series', 'assets/images/Series.png', '2'),
-                _buildCategoryCard('Movies', 'assets/images/Movies.png', '3'),
+                _buildCategoryCard('Movies', 'assets/images/Movies.png', '2'),
+                _buildCategoryCard('Series', 'assets/images/Series.png', '3'),
                 _buildCategoryCard('Music', 'assets/images/Musics.png', '4'),
               ],
             ),
