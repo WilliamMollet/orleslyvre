@@ -8,9 +8,9 @@ class ItemPage extends StatefulWidget {
 }
 
 class _ItemPageState extends State<ItemPage> {
-  String selectedCategory = ''; // Catégorie sélectionnée par défaut
-  int selectedCategoryId = 0; // ID de la catégorie sélectionnée
-  List<Map<String, dynamic>> categories = []; // Liste des catégories
+  String selectedCategory = ''; 
+  int selectedCategoryId = 0; 
+  List<Map<String, dynamic>> categories = []; 
 
   TextEditingController nameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -22,7 +22,7 @@ class _ItemPageState extends State<ItemPage> {
   }
 
   Future<void> fetchCategories() async {
-    final String apiUrl = 'http://localhost:3000/api/categories'; // Remplacez par votre URL API
+    final String apiUrl = 'http://localhost:3000/api/categories'; 
 
     final response = await http.get(Uri.parse(apiUrl));
 
@@ -41,7 +41,6 @@ class _ItemPageState extends State<ItemPage> {
         }
       });
     } else {
-      // Gérer l'erreur
       showDialog(
         context: context,
         builder: (context) {
@@ -63,7 +62,7 @@ class _ItemPageState extends State<ItemPage> {
   }
 
   Future<void> addItem() async {
-    final String apiUrl = 'http://localhost:3000/api/items'; // Remplacez par votre URL API
+    final String apiUrl = 'http://localhost:3000/api/items'; 
 
     final response = await http.post(
       Uri.parse(apiUrl),
@@ -73,15 +72,13 @@ class _ItemPageState extends State<ItemPage> {
       body: jsonEncode({
         'name_item': nameController.text,
         'desc_item': descriptionController.text,
-        'id_cat': selectedCategoryId, // Utiliser l'ID de la catégorie sélectionnée
+        'id_cat': selectedCategoryId, 
       }),
     );
 
     if (response.statusCode == 201) {
-      // Succès
-      Navigator.pop(context); // Retourner à la page précédente
+      Navigator.pop(context); 
     } else {
-      // Échec
       showDialog(
         context: context,
         builder: (context) {
@@ -152,7 +149,7 @@ class _ItemPageState extends State<ItemPage> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                addItem(); // Appeler la fonction addItem pour ajouter l'élément
+                addItem(); 
               },
               child: Text('Ajouter'),
             ),

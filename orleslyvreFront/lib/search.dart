@@ -14,9 +14,9 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   List<dynamic> items = [];
   List<dynamic> categories = [];
-  String selectedCategory = ''; // Catégorie sélectionnée dans le filtre
-  String selectedCategoryId = ''; // ID de la catégorie sélectionnée
-  int selectedRating = 0; // Note sélectionnée dans le filtre
+  String selectedCategory = ''; 
+  String selectedCategoryId = ''; 
+  int selectedRating = 0; 
   TextEditingController searchTextController = TextEditingController();
 
   @override
@@ -89,7 +89,7 @@ class _SearchPageState extends State<SearchPage> {
                   child: TextField(
                     controller: searchTextController,
                     onChanged: (value) {
-                      // Réagir aux changements dans la barre de recherche
+               
                       fetchItems(searchQuery: value);
                     },
                     decoration: InputDecoration(
@@ -140,7 +140,6 @@ class _SearchPageState extends State<SearchPage> {
                 onChanged: (String? newValue) {
                   setState(() {
                     selectedCategory = newValue!;
-                    // Trouver l'ID de la catégorie sélectionnée
                     selectedCategoryId = categories.firstWhere((category) => category['cat_label'] == selectedCategory)['cat_id'];
                     fetchItems(categoryFilter: selectedCategoryId, ratingFilter: selectedRating);
                   });
