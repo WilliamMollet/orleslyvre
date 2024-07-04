@@ -96,7 +96,8 @@ class _HomePageState extends State<HomePage> {
                       itemBuilder: (context, index) {
                         return ListTile(
                           title: Text(top5Items[index]['name_item']),
-                          subtitle: top5Items[index]['id_cat'],
+                          subtitle: Text('Categorie' + top5Items[index]['cat_item'] +'NOTE' + top5Items[index]['avg_rating_item'].toString() ),
+                        
                         );
                       },
                     ),
