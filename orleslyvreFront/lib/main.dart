@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:core';
 import 'package:google_fonts/google_fonts.dart';
-import 'item.dart'; // Importation de la page "Item"
-import 'search.dart'; // Importation de la page "SearchPage"
+import 'item.dart'; 
+import 'search.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -96,7 +98,7 @@ class _HomePageState extends State<HomePage> {
                       itemBuilder: (context, index) {
                         return ListTile(
                           title: Text(top5Items[index]['name_item']),
-                          subtitle: Text('Categorie' + top5Items[index]['cat_item'] +'NOTE' + top5Items[index]['avg_rating_item'].toString() ),
+                          subtitle: Text('Categorie: ' + top5Items[index]['cat_item'] + '  |  NOTE: ' + top5Items[index]['avg_rating_item']),
                         
                         );
                       },

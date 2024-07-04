@@ -13,7 +13,9 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   List<dynamic> items = [];
+  List<dynamic> categories = [];
   String selectedCategory = ''; // Catégorie sélectionnée dans le filtre
+  String selectedCategoryId = ''; // ID de la catégorie sélectionnée
   int selectedRating = 0; // Note sélectionnée dans le filtre
   TextEditingController searchTextController = TextEditingController();
 
@@ -21,11 +23,27 @@ class _SearchPageState extends State<SearchPage> {
   void initState() {
     super.initState();
     fetchItems();
+    fetchCategories().then((data) {
+      setState(() {
+        categories = data;
+      });
+    });
+  }
+
+  Future<List<dynamic>> fetchCategories() async {
+    String apiUrl = 'http://localhost:3000/api/categories'; 
+
+    final response = await http.get(Uri.parse(apiUrl));
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to load categories');
+    }
   }
 
   Future<void> fetchItems({String? categoryFilter, int? ratingFilter, String? searchQuery}) async {
-    String apiUrl = 'http://localhost:3000/api/items/search/items?category=${widget.categoryId}';
-    if (categoryFilter != null) {
+    String apiUrl = 'http://localhost:3000/api/items/search/items?category=${widget.categoryId}&rating=${selectedRating}&sarch=${searchQuery}';
+    if (categoryFilter != null && categoryFilter.isNotEmpty) {
       apiUrl += '&filter_category=$categoryFilter';
     }
     if (ratingFilter != null && ratingFilter > 0) {
@@ -122,14 +140,15 @@ class _SearchPageState extends State<SearchPage> {
                 onChanged: (String? newValue) {
                   setState(() {
                     selectedCategory = newValue!;
-                    fetchItems(categoryFilter: selectedCategory, ratingFilter: selectedRating);
+                    // Trouver l'ID de la catégorie sélectionnée
+                    selectedCategoryId = categories.firstWhere((category) => category['cat_label'] == selectedCategory)['cat_id'];
+                    fetchItems(categoryFilter: selectedCategoryId, ratingFilter: selectedRating);
                   });
                 },
-                items: <String>['Books', 'Series', 'Movies', 'Music']
-                    .map<DropdownMenuItem<String>>((String value) {
+                items: categories.map<DropdownMenuItem<String>>((dynamic category) {
                   return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
+                    value: category['cat_label'],
+                    child: Text(category['cat_label']),
                   );
                 }).toList(),
               ),
@@ -141,7 +160,7 @@ class _SearchPageState extends State<SearchPage> {
                 onChanged: (int? newValue) {
                   setState(() {
                     selectedRating = newValue!;
-                    fetchItems(categoryFilter: selectedCategory, ratingFilter: selectedRating);
+                    fetchItems(categoryFilter: selectedCategoryId, ratingFilter: selectedRating);
                   });
                 },
                 items: <int>[1, 2, 3, 4, 5]
@@ -159,7 +178,7 @@ class _SearchPageState extends State<SearchPage> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Filtrer'),
+              child: Text('Fermer'),
             ),
           ],
         );
